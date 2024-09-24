@@ -183,35 +183,95 @@ class _DotsAndBoxesGameState extends State<DotsAndBoxesGame> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        icon: Icon(
+          size: 55,
+          Icons.person_2_sharp,
+          color: (player1Score == player2Score)
+              ? Colors.deepPurple.shade900
+              : (player1Score > player2Score)
+                  ? Colors.blue
+                  : Colors.green,
+        ),
         shape:
             ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20)),
         backgroundColor: Colors.deepPurple.shade300,
-        title: Text(
-          'Game Over',
-          style: TextStyle(
-              color: Colors.deepPurple.shade900, fontFamily: 'poppins'),
-        ),
-        content: Text(
-          message,
-          style: TextStyle(
-              color: Colors.deepPurple.shade800,
-              fontFamily: 'poppins',
-              fontWeight: FontWeight.bold),
+        title: (player1Score == player2Score)
+            ? Text(
+                "DRAW",
+                style: TextStyle(
+                    color: Colors.deepPurple.shade900, fontFamily: 'poppins'),
+              )
+            : Text(
+                "Game Over",
+                style: TextStyle(
+                    color: Colors.deepPurple.shade900, fontFamily: 'poppins'),
+              ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.person_3,
+                  color: Colors.blue,
+                  size: 40,
+                  weight: 50,
+                ),
+                Text(
+                  player1Score.toString(),
+                  style: TextStyle(
+                      color: Colors.deepPurple[900],
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.person_3,
+                  color: Colors.green,
+                  size: 40,
+                  weight: 50,
+                ),
+                Text(
+                  player2Score.toString(),
+                  style: TextStyle(
+                      color: Colors.deepPurple[900],
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25),
+                )
+              ],
+            )
+          ],
         ),
         actions: [
-          Tooltip(
-            message: "Restart",
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _resetGame();
-              },
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+              _resetGame();
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: 300,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade600,
+                  border:
+                      Border.all(color: Colors.deepPurple.shade400, width: 5),
+                  borderRadius: BorderRadius.circular(15)),
               child: Text(
-                'Restart',
-                style: TextStyle(color: Colors.deepPurple.shade800),
+                "play Again",
+                style: TextStyle(
+                    color: Colors.deepPurple.shade300,
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -232,7 +292,7 @@ class _DotsAndBoxesGameState extends State<DotsAndBoxesGame> {
             toolbarHeight: 100,
             backgroundColor: Colors.deepPurple.shade300,
             title: Text(
-              'Dots and Boxes',
+              'DotBox',
               style: TextStyle(
                   color: Colors.deepPurple.shade900,
                   fontSize: 30,
@@ -283,16 +343,25 @@ class _DotsAndBoxesGameState extends State<DotsAndBoxesGame> {
                   padding:
                       EdgeInsets.only(right: 20, left: 20, top: 6, bottom: 6),
                   decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red.shade400, width: 4),
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.deepPurple.shade600,
                   ),
-                  child: Text(
-                    player1Turn ? 'PLAYER 1' : 'PLAYER 2',
-                    style: TextStyle(
-                        fontSize: 24,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.person_3_rounded,
                         color: _getCurrentPlayerColor(),
-                        fontFamily: 'popregular',
-                        fontWeight: FontWeight.bold),
+                        size: 40,
+                      ),
+                      Text(
+                        "Turn",
+                        style: TextStyle(
+                            fontFamily: 'poppins',
+                            fontSize: 25,
+                            color: Colors.deepPurple.shade200),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -381,14 +450,85 @@ class _DotsAndBoxesGameState extends State<DotsAndBoxesGame> {
                       EdgeInsets.only(right: 20, left: 20, top: 5, bottom: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.deepPurple.shade600,
+                    color: Colors.deepPurple.shade300,
                   ),
-                  child: Text(
-                    'Player1:\t\t\t$player1Score   |   $player2Score \t\t:Player2',
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.deepPurple.shade100,
-                        fontFamily: 'poppins'),
+                  // child: Text(
+                  //   'Player1:\t\t\t$player1Score   |   $player2Score \t\t:Player2',
+                  //   style: TextStyle(
+                  //       fontSize: 24,
+                  //       color: Colors.deepPurple.shade100,
+                  //       fontFamily: 'poppins'),
+                  // ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Icon(
+                              Icons.person_2_rounded,
+                              color: Colors.white,
+                              size: 45,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.deepPurple.shade900, width: 2),
+                              color: Colors.deepPurple.shade200,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              player1Score.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 30,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Icon(
+                              Icons.person_2_rounded,
+                              color: Colors.white,
+                              size: 45,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.deepPurple.shade900, width: 2),
+                              color: Colors.deepPurple.shade200,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              player2Score.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 30,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
